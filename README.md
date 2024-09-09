@@ -8,6 +8,7 @@ Aplicación web Full Stack de Ecommerce que permite a los usuarios registrarse, 
 - [Instalación](#instalación)
 - [Endpoints](#endpoints)
     - [Usuarios](#usuarios)
+    - [Productos](#productos)
 - [Pruebas](#pruebas)
 
 ## Tecnologías
@@ -136,6 +137,35 @@ POST /api/users/login
 | `email` | `string` | **Requerido**.  Correo electrónico del usuario |
 | `password` | `string` | **Requerido**. Contraseña del usuario |
 
+### Productos
+
+| Nombre | Método | Url |
+|:------ | :----- | :-- |
+| [Obtener lista de productos](#obtener-productos) | `GET` | `/api/products/` |
+
+#### Obtener lista de productos
+
+##### Método HTTP
+
+```http
+GET /api/products/
+
+GET /api/products/?page=<number_page>
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `?page=<number_page>` | `int` | Numero de la paginacion |
+
+**Nota:** Utiliza el siguiente comando para llenar la base de datos con productos de muestra
+
+```bash
+cd backend
+python manage.py populate_products
+```
+
 ## Pruebas
 
 ### Backend
@@ -159,3 +189,13 @@ Para garantizar que el backend funcione correctamente, realiza las siguientes pr
     ```
 
     Estas pruebas se encargan de verificar que los endpoints de register y login funcionen correctamente.
+
+- **Ejecutar Pruebas Especificas de la Aplicación de Productos**
+
+    Si deseas ejecutar solo las pruebas relacionadas con la aplicación de productos, utiliza el siguiente comando:
+
+    ```bash
+    python manage.py test products.tests
+    ```
+
+    Estas pruebas se encargan de verificar que el endpoint de product_list funcione correctamente.
