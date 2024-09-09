@@ -6,6 +6,9 @@ Aplicación web Full Stack de Ecommerce que permite a los usuarios registrarse, 
 
 - [Tecnologías](#tecnologías)
 - [Instalación](#instalación)
+- [Endpoints](#endpoints)
+    - [Usuarios](#usuarios)
+- [Pruebas](#pruebas)
 
 ## Tecnologías
 
@@ -94,3 +97,65 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
     ```
 
 ¡Listo! El proyecto debería estar en funcionamiento en tu entorno local. Puedes acceder a la interfaz de usuario desde tu navegador web visitando `http://localhost:8080` y la API backend desde `http://localhost:8000`.
+
+## Endpoints
+
+### Usuarios
+
+| Nombre | Método | Url |
+|:------ | :----- | :-- |
+| [Registro de Usuarios](#registro-de-usuario) | `POST` | `/api/users/register` |
+| [Inicio de Sesión de Usuarios](#inicio-de-sesión-de-usuario) | `POST` | `/api/users/login` |
+
+#### registro de usuario
+
+```http
+POST /api/users/register
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `username` | `string` | **Requerido**. Nombre del usuario |
+| `email` | `string` | **Requerido**.  Correo electrónico del usuario |
+| `password` | `string` | **Requerido**. Contraseña del usuario |
+
+#### Inicio de sesión de usuario
+
+##### Método HTTP
+
+```http
+POST /api/users/login
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `email` | `string` | **Requerido**.  Correo electrónico del usuario |
+| `password` | `string` | **Requerido**. Contraseña del usuario |
+
+## Pruebas
+
+### Backend
+
+Para garantizar que el backend funcione correctamente, realiza las siguientes pruebas:
+
+- **Ejecutar Todas las Pruebas del Backend**
+
+    Ejecuta todas las pruebas del backend para verificar el funcionamiento general de la aplicación:
+
+    ```bash
+    python manage.py test
+    ```
+
+- **Ejecutar Pruebas Específicas de la Aplicación de Usuarios**
+
+    Si deseas ejecutar solo las pruebas relacionadas con la aplicación de usuarios, utiliza el siguiente comando:
+
+    ```bash
+    python manage.py test users.tests
+    ```
+
+    Estas pruebas se encargan de verificar que los endpoints de register y login funcionen correctamente.
