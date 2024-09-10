@@ -22,35 +22,32 @@
     </form>
 </template>
   
-<script lang="ts">
-    import { defineComponent, ref } from 'vue';
-  
-    export default defineComponent({
-        name: 'AuthForm',
-        props: {
-            isRegister: {
-                type: Boolean,
-                default: false
-            }
-        },
-        setup(props, { emit }) {
-            const formData = ref({
-                username: '',
-                email: '',
-                password: ''
-            });
+<script lang="ts" setup>
+    import { ref, defineProps, defineEmits } from 'vue';
 
-            const handleSubmit = () => {
-                emit('submit', formData.value);
-            };
+    // Definine los props que el componente acepta
+    const props = defineProps<{
+        isRegister?: boolean;
+    }>();
 
-            return {
-                formData,
-                handleSubmit
-            };
-        }
+    // Define los eventos del componente
+    const emit = defineEmits<{
+        (event: 'submit', formData: { username: string; email: string; password: string }): void;
+    }>();
+
+    // Almacena los datos del formulario
+    const formData = ref({
+        username: '',
+        email: '',
+        password: ''
     });
+
+    // Función para maneja el envío del formulario
+    const handleSubmit = () => {
+        emit('submit', formData.value);
+    };
 </script>
+
   
 <style scoped>
     .form {

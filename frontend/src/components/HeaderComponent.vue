@@ -5,28 +5,25 @@
     </header>
 </template>
 
-<script lang="ts">
-    import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+    import { defineProps, defineEmits, PropType } from 'vue';
 
-    export default defineComponent({
-        props: {
-            cartIconClass: {
-                type: Object as PropType<{ [key: string]: boolean }>,
-                required: false
-            }
-        },
-        emits: ['openCart'],
-        setup(_, { emit }) {
-            const handleClick = () => {
-                emit('openCart');
-            };
+    // Define las propiedades del componente
+    const props = defineProps<{
+        cartIconClass?: { [key: string]: boolean };
+    }>();
 
-            return {
-                handleClick
-            };
-        }
-    });
+    // Define los eventos del componente
+    const emit = defineEmits<{
+        (event: 'openCart'): void;
+    }>();
+
+    // Función que maneja el evento 'openCart'
+    const handleClick = () => {
+        emit('openCart');
+    };
 </script>
+
 
 <style scoped>
     .cart-icon {

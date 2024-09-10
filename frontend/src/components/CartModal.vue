@@ -20,42 +20,38 @@
     </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+    import { defineProps, defineEmits, PropType } from 'vue';
 
-export default defineComponent({
-    props: {
-        isVisible: {
-            type: Boolean,
-            required: true
-        },
-        cart: {
-            type: Array as PropType<Array<{ id: number, name: string, price: number }>>,
-            required: true
-        }
-    },
-    emits: ['closeCart', 'removeFromCart', 'placeOrder'],
-    setup(props, { emit }) {
-        const closeModal = () => {
-            emit('closeCart');
-        };
+    // Define las propiedades del componente
+    const props = defineProps<{
+        isVisible: boolean;
+        cart: Array<{ id: number; name: string; price: number }>;
+    }>();
 
-        const removeFromCart = (index: number) => {
-            emit('removeFromCart', index);
-        };
+    // Define los eventos del componente
+    const emit = defineEmits<{
+        (event: 'closeCart'): void;
+        (event: 'removeFromCart', index: number): void;
+        (event: 'placeOrder'): void;
+    }>();
 
-        const placeOrder = () => {
-            emit('placeOrder');
-        };
+    // Función para cerrar el modal
+    const closeModal = () => {
+        emit('closeCart');
+    };
 
-        return {
-            closeModal,
-            removeFromCart,
-            placeOrder
-        };
-    }
-});
+    // Función para eliminar un producto del carrito
+    const removeFromCart = (index: number) => {
+        emit('removeFromCart', index);
+    };
+
+    // Función para realizar un pedido
+    const placeOrder = () => {
+        emit('placeOrder');
+    };
 </script>
+
 
 <style scoped>
     .modal-overlay {

@@ -6,34 +6,32 @@
     </div>
 </template>
   
-<script lang="ts">
-    import { defineComponent, PropType } from 'vue';
-  
+<script lang="ts" setup>
+    import { defineProps, defineEmits, PropType } from 'vue';
+
+    // Interfaz que define la estructura de un producto
     interface Product {
         name: string;
         price: number;
     }
-  
-    export default defineComponent({
-        props: {
-            product: {
-                type: Object as PropType<Product>,
-                required: true
-            }
-        },
-        emits: ['addToCart'],
-        setup(props, { emit }) {
-            const handleAddToCart = () => {
-                emit('addToCart', props.product.name, props.product.price);
-            };
-    
-            return {
-                handleAddToCart
-            };
-        }
-    });
+
+    // Define las propiedades del componente
+    const props = defineProps<{
+        product: Product;
+    }>();
+
+    // Define los eventos del componente
+    const emit = defineEmits<{
+        (event: 'addToCart', productName: string, productPrice: number): void;
+    }>();
+
+    // Función que maneja el evento de agregar al carrito
+    const handleAddToCart = () => {
+        emit('addToCart', props.product.name, props.product.price);
+    };
 </script>
-  
+
+
 <style scoped> 
     .product-card {
         background-color: #fff;

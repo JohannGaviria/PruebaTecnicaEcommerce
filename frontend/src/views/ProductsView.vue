@@ -15,69 +15,68 @@
     </div>
 </template>
 
-<script lang="ts">
-    import { defineComponent, ref, nextTick } from 'vue';
+<script lang="ts" setup>
+    import { ref, nextTick } from 'vue';
+    import HeaderComponent from '@/components/HeaderComponent.vue';
     import MainComponent from '@/components/MainComponent.vue';
     import CartModal from '@/components/CartModal.vue';
-    import HeaderComponent from '@/components/HeaderComponent.vue';
 
-    export default defineComponent({
-        components: {
-            HeaderComponent,
-            MainComponent,
-            CartModal
-        },
-        setup() {
-            const isCartVisible = ref(false);
-            const cartItems = ref<Array<{ id: number, name: string, price: number }>>([]);
-            const isCartVibrating = ref(false);
+    // Estado para controlar la visibilidad del carrito
+    const isCartVisible = ref(false);
 
-            const openCart = () => {
-                isCartVisible.value = true;
-            };
+    // Estado para almacenar los ítems del carrito
+    const cartItems = ref<Array<{ id: number; name: string; price: number }>>([]);
 
-            const closeCart = () => {
-                isCartVisible.value = false;
-            };
+    // Estado para manejar la vibración del carrito
+    const isCartVibrating = ref(false);
 
-            const handleAddToCart = (productName: string, productPrice: number) => {
-                cartItems.value.push({ id: cartItems.value.length + 1, name: productName, price: productPrice });
-                triggerCartVibration();
-            };
+    // Función para abrir el carrito
+    const openCart = () => {
+        isCartVisible.value = true;
+    };
 
-            const triggerCartVibration = () => {
-                isCartVibrating.value = true;
-                nextTick(() => {
-                    setTimeout(() => {
-                        isCartVibrating.value = false;
-                    }, 300);
-                });
-            };
+    // Función para cerrar el carrito
+    const closeCart = () => {
+        isCartVisible.value = false;
+    };
 
-            const removeFromCart = (index: number) => {
-                cartItems.value.splice(index, 1);
-            };
+    // Función para agregar un producto al carrito
+    const handleAddToCart = (productName: string, productPrice: number) => {
+        cartItems.value.push({ id: cartItems.value.length + 1, name: productName, price: productPrice });
+        triggerCartVibration();
+    };
 
-            const handlePlaceOrder = () => {
-                console.log('Order placed:', cartItems.value);
-                cartItems.value = [];
-                isCartVisible.value = false;
-                alert('Your order has been placed successfully!');
-            };
+    // Función para activar la vibración del carrito
+    const triggerCartVibration = () => {
+        isCartVibrating.value = true;
+        nextTick(() => {
+            setTimeout(() => {
+                isCartVibrating.value = false;
+            }, 300);
+        });
+    };
 
-            return {
-                isCartVisible,
-                cartItems,
-                isCartVibrating,
-                openCart,
-                closeCart,
-                handleAddToCart,
-                removeFromCart,
-                handlePlaceOrder
-            };
-        }
-    });
+    // Función para eliminar un ítem del carrito
+    const removeFromCart = (index: number) => {
+        cartItems.value.splice(index, 1);
+    };
+
+    // Función para realizar el pedido y vaciar el carrito
+    const handlePlaceOrder = () => {
+        console.log('Order placed:', cartItems.value);
+        cartItems.value = [];
+        isCartVisible.value = false;
+        alert('Your order has been placed successfully!');
+    };
+
+    // Define los componentes utilizados en este componente
+    const components = {
+        HeaderComponent,
+        MainComponent,
+        CartModal
+    };
 </script>
+
 
 <style scoped>
     .vibrate {

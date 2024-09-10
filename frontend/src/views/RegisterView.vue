@@ -5,26 +5,20 @@
         </div>
 </template>
   
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script lang="ts" setup>
     import AuthForm from '@/components/AuthComponent.vue';
-  
-    export default defineComponent({
-        name: 'RegisterView',
-        components: {
-            AuthForm
-        },
-        setup() {
-            const handleRegister = (formData: { username: string, email: string, password: string }) => {
-                console.log('Register with:', formData);
-            };
-    
-            return {
-                handleRegister
-            };
-        }
-    });
+
+    // Función que maneja el registro de usuario
+    const handleRegister = (formData: { username: string; email: string; password: string }) => {
+        console.log('Register with:', formData);
+    };
+
+    // Define los componentes utilizados en este componente
+    const components = {
+        AuthForm
+    };
 </script>
+
   
 <style scoped>
     #register {

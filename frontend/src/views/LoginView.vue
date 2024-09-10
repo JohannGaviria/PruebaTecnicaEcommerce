@@ -5,26 +5,20 @@
     </div>
 </template>
   
-<script lang="ts">
-    import { defineComponent } from 'vue';
+<script lang="ts" setup>
     import AuthForm from '@/components/AuthComponent.vue';
-    
-    export default defineComponent({
-        name: 'LoginView',
-        components: {
-            AuthForm
-        },
-        setup() {
-            const handleLogin = (formData: { email: string, password: string }) => {
-            console.log('Login with:', formData);
-        };
-    
-        return {
-            handleLogin
-        };
-        }
-    });
+
+    // Función que maneja el login
+    const handleLogin = (formData: { email: string; password: string }) => {
+        console.log('Login with:', formData);
+    };
+
+    // Define los componentes utilizados en este componente
+    const components = {
+        AuthForm
+    };
 </script>
+
   
 <style scoped>
     #login {
