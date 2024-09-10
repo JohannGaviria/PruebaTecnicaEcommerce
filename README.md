@@ -9,6 +9,7 @@ Aplicación web Full Stack de Ecommerce que permite a los usuarios registrarse, 
 - [Endpoints](#endpoints)
     - [Usuarios](#usuarios)
     - [Productos](#productos)
+    - [Carrito](#carrito)
 - [Pruebas](#pruebas)
 
 ## Tecnologías
@@ -141,7 +142,7 @@ POST /api/users/login
 
 | Nombre | Método | Url |
 |:------ | :----- | :-- |
-| [Obtener lista de productos](#obtener-productos) | `GET` | `/api/products/` |
+| [Obtener lista de productos](#obtener-lista-de-productos) | `GET` | `/api/products/` |
 
 #### Obtener lista de productos
 
@@ -165,6 +166,45 @@ GET /api/products/?page=<number_page>
 cd backend
 python manage.py populate_products
 ```
+
+### Carrito
+
+| Nombre | Método | Url |
+|:------ | :----- | :-- |
+| [Agregar Producto al Carrito](#agregar-productos-al-carrito) | `POST` | `/api/cart/add` |
+| [Obtener Lista de Productos en el Carrito](#obtener-productos-del-carrito) | `GET` | `/api/cart/` |
+
+#### Agregar Productos al Carrito
+
+##### Método HTTP
+
+```http
+POST /api/cart/add
+Authorization: Token <token>
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido** Token de autenticación |
+| `product_id` | `int` | **Requerido** ID del producto |
+| `quantity` | `int` | **Requerido** Cantidad del producto |
+
+#### Obtener Productos del Carrito
+
+##### Método HTTP
+
+```http
+GET /api/cart/
+Authorization: Token <token>
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido** Token de autenticación |
 
 ## Pruebas
 
@@ -199,3 +239,13 @@ Para garantizar que el backend funcione correctamente, realiza las siguientes pr
     ```
 
     Estas pruebas se encargan de verificar que el endpoint de product_list funcione correctamente.
+
+- **Ejecutar Pruebas Especificas de la Aplicación del carrito**
+
+    Si deseas ejecutar solo las pruebas relacionadas con la aplicación del carrito, utiliza el siguiente comando:
+
+    ```bash
+    python manage.py test cart.tests
+    ```
+
+    Estas pruebas se encargan de verificar que el endpoint de add_product_cart y product_cart_list funcione correctamente.
