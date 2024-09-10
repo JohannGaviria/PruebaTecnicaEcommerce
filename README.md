@@ -10,6 +10,7 @@ Aplicación web Full Stack de Ecommerce que permite a los usuarios registrarse, 
     - [Usuarios](#usuarios)
     - [Productos](#productos)
     - [Carrito](#carrito)
+    - [Orden](#orden)
 - [Pruebas](#pruebas)
 
 ## Tecnologías
@@ -206,6 +207,44 @@ Authorization: Token <token>
 | :-------- | :------- | :------------------------- |
 | `token` | `string` | **Requerido** Token de autenticación |
 
+### Orden
+
+| Nombre | Método | Url |
+|:------ | :----- | :-- |
+| [Crear una Orden](#crear-una-orden) | `POST` | `/api/order/` |
+| [Obtener Detalles de una Orden](#obtener-detalles-de-una-orden) | `GET` | `/api/order/<int:order_id>` |
+
+#### Crear una orden
+
+##### Método HTTP
+
+```http
+POST /api/order/
+Authorization: Token <token>
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido** Token de autenticación |
+
+#### Obtener detalles de una orden
+
+##### Método HTTP
+
+```http
+GET /api/order/<order_id>
+Authorization: Token <token>
+```
+
+##### Parámetros
+
+| Parámetro | Tipo     | Descripción                |
+| :-------- | :------- | :------------------------- |
+| `token` | `string` | **Requerido** Token de autenticación |
+| `order_id` | `int` | **Requerido** ID de la orden |
+
 ## Pruebas
 
 ### Backend
@@ -249,3 +288,13 @@ Para garantizar que el backend funcione correctamente, realiza las siguientes pr
     ```
 
     Estas pruebas se encargan de verificar que el endpoint de add_product_cart y product_cart_list funcione correctamente.
+
+    - **Ejecutar Pruebas Especificas de la Aplicación de orden**
+
+    Si deseas ejecutar solo las pruebas relacionadas con la aplicación de orden, utiliza el siguiente comando:
+
+    ```bash
+    python manage.py test order.tests
+    ```
+
+    Estas pruebas se encargan de verificar que el endpoint de create_order y order_detail funcione correctamente.

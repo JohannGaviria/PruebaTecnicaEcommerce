@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from products.models import Product
 from .models import Cart
+from django.db import models
 from .serializers import CartSerializer, CartItemSerializer
 
 
@@ -18,24 +19,27 @@ def add_product_cart(request):
     quantity = request.data.get('quantity')
 
     try:
-        # Obtiene el producto segun el ID que se le pase
+        # Obtiene el producto según el ID que se le pase
         product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
-        # Respuesta erronea a no encontrar el producto segun el ID
+        # Respuesta de error si no se encuentra el producto
         return Response({
             'status': 'error',
-            'message': 'product not found'
+            'message': 'Product not found'
         }, status=status.HTTP_404_NOT_FOUND)
     
-    # Verifica que el producto este disponible
+    # Verifica que el producto esté disponible
     if not product.availability:
         return Response({
             'status': 'error',
             'message': 'Product is not available'
         }, status=status.HTTP_400_BAD_REQUEST)
     
+    # Convierte la cantidad a entero
+    quantity = int(quantity)
+
     # Verifica que la cantidad no supere la disponibilidad
-    if int(quantity) > product.availability:
+    if quantity > product.availability:
         return Response({
             'status': 'error',
             'message': 'Quantity exceeds available stock'
@@ -44,22 +48,25 @@ def add_product_cart(request):
     # Obtiene o crea el carrito del usuario
     cart, created = Cart.objects.get_or_create(user=request.user)
 
-    # Obtiene o crea un ítem en el carrito para el producto
+    # Obtiene el ítem del carrito para el producto
     cart_item, created = cart.items.get_or_create(product=product)
 
-    # Verifica que el ítem ya exista en el carrtio
+    # Verifica la cantidad total en el carrito
+    total_quantity = cart.items.filter(product=product).aggregate(total_quantity=models.Sum('quantity'))['total_quantity'] or 0
+    if total_quantity + quantity > product.availability:
+        return Response({
+            'status': 'error',
+            'message': 'Total quantity in cart exceeds available stock'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Verifica que el ítem ya exista en el carrito
     if not created:
-        cart_item.quantity += int(quantity) # Incrementa la cantidad
+        cart_item.quantity += quantity  # Incrementa la cantidad
     else:
-        cart_item.quantity = int(quantity) # Establece la cantidad inicial
+        cart_item.quantity = quantity  # Establece la cantidad inicial
 
-    # Guardar los cambios en el ítem del carrito
+    # Guarda los cambios en el ítem del carrito
     cart_item.save()
-
-    # Descuenta la cantidad del item a la disponibilidad del producto
-    product.availability -= quantity
-    # Guarda la nueva disponibilidad
-    product.save()
 
     # Serializa los datos del carrito
     cart_serializer = CartSerializer(cart)
@@ -67,7 +74,7 @@ def add_product_cart(request):
     # Respuesta exitosa del endpoint
     return Response({
         'status': 'success',
-        'message': 'product added to cart successfully',
+        'message': 'Product added to cart successfully',
         'data': {
             'cart': cart_serializer.data
         }
