@@ -18,6 +18,8 @@ class RegisterService {
             if (data.status === 'success') {
                 // Redirige al login
                 window.location.href = '/login'
+            } else {
+                alert(`Register failed: ${data.message}`)
             }
         } catch (error) {
             console.error('An Error occurred:', error);

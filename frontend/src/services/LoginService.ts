@@ -29,7 +29,7 @@ class LoginService {
                 // Redirige a la ruta raíz
                 window.location.href = '/';
             } else {
-                console.error('Login failed:', data.message);
+                alert(`Login failed: ${data.errors.non_field_errors}`);
             }
         } catch (error) {
             console.error('An error occurred:', error);

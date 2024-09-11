@@ -2,31 +2,35 @@
     <div class="product-card" v-if="product">
         <h2>{{ product.name }}</h2>
         <p>${{ product.price.toFixed(2) }}</p>
-        <button @click="handleAddToCart">Add to Cart</button>
+        {{ product.availability }} /
+        <input type="number" v-model="quantity" min="1" max="{{ product.availability }}" />
+        <button id="add-cart-btn" :disabled="product.availability < 1" @click="handleAddToCart">Add to Cart</button>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { defineProps, defineEmits } from 'vue';
+    import { ref, defineProps, defineEmits } from 'vue';
     import IProduct from '@/interfaces/IProduct';
+    import ProductService from '@/services/ProductService';
 
     // Define las propiedades del componente
     const props = defineProps<{
         product: IProduct;
     }>();
 
-    // Define los eventos del componente
-    const emit = defineEmits<{
-        (event: 'addToCart', productName: string, productPrice: number): void;
-    }>();
+    // Define la cantidad del producto a agregar al carrito
+    const quantity = ref(1);
+
+    // Obtén una instancia del ProductService
+    const productService = new ProductService();
 
     // Función que maneja el evento de agregar al carrito
-    const handleAddToCart = () => {
-        emit('addToCart', props.product.name, props.product.price);
+    const handleAddToCart = async () => {
+        await productService.addToCart(props.product.id, quantity.value);
     };
 </script>
 
-<style scoped> 
+<style scoped>
     .product-card {
         background-color: #fff;
         padding: 1.5rem;
@@ -53,8 +57,15 @@
         color: #666;
     }
 
+    .product-card input {
+        width: 10%;
+        margin-bottom: 10px;
+    }
+    
     .product-card button {
+        width: 100%;
         padding: 0.75rem 1.5rem;
+        margin-top: 15px;
         border: none;
         background-color: #4a90e2;
         color: #fff;
@@ -79,5 +90,10 @@
         50% { transform: translateX(2px); }
         75% { transform: translateX(-2px); }
     }
+
+    #add-cart-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        color: #1b1b1b;
+    }
 </style>
-  

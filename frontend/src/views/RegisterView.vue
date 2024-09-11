@@ -14,7 +14,7 @@
         try {
             await RegisterService.register(formData.username, formData.email, formData.password);
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('Register error:', error);
         }
     };
 </script>

@@ -21,6 +21,11 @@
     import MainComponent from '@/components/MainComponent.vue';
     import CartModal from '@/components/CartModal.vue';
 
+    // Elimina el carrito del almacenamiento local
+    window.addEventListener('beforeunload', () => {
+        localStorage.removeItem('cart');
+    });
+
     // Estado para controlar la visibilidad del carrito
     const isCartVisible = ref(false);
 
@@ -67,13 +72,6 @@
         cartItems.value = [];
         isCartVisible.value = false;
         alert('Your order has been placed successfully!');
-    };
-
-    // Define los componentes utilizados en este componente
-    const components = {
-        HeaderComponent,
-        MainComponent,
-        CartModal
     };
 </script>
 
