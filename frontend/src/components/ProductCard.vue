@@ -1,23 +1,18 @@
 <template>
-    <div class="product-card">
+    <div class="product-card" v-if="product">
         <h2>{{ product.name }}</h2>
         <p>${{ product.price.toFixed(2) }}</p>
         <button @click="handleAddToCart">Add to Cart</button>
     </div>
 </template>
-  
-<script lang="ts" setup>
-    import { defineProps, defineEmits, PropType } from 'vue';
 
-    // Interfaz que define la estructura de un producto
-    interface Product {
-        name: string;
-        price: number;
-    }
+<script lang="ts" setup>
+    import { defineProps, defineEmits } from 'vue';
+    import IProduct from '@/interfaces/IProduct';
 
     // Define las propiedades del componente
     const props = defineProps<{
-        product: Product;
+        product: IProduct;
     }>();
 
     // Define los eventos del componente
@@ -30,7 +25,6 @@
         emit('addToCart', props.product.name, props.product.price);
     };
 </script>
-
 
 <style scoped> 
     .product-card {

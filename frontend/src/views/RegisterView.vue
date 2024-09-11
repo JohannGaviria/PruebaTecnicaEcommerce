@@ -7,18 +7,17 @@
   
 <script lang="ts" setup>
     import AuthForm from '@/components/AuthComponent.vue';
-
+    import RegisterService from '@/services/RegisterService';
+    
     // Función que maneja el registro de usuario
-    const handleRegister = (formData: { username: string; email: string; password: string }) => {
-        console.log('Register with:', formData);
-    };
-
-    // Define los componentes utilizados en este componente
-    const components = {
-        AuthForm
+    const handleRegister = async (formData: { username: string; email: string; password: string }) => {
+        try {
+            await RegisterService.register(formData.username, formData.email, formData.password);
+        } catch (error) {
+            console.error('Login error:', error);
+        }
     };
 </script>
-
   
 <style scoped>
     #register {

@@ -12,37 +12,28 @@
 </template>
     
 <script lang="ts" setup>
-    import { ref, defineEmits } from 'vue';
+    import { ref, defineEmits, onMounted } from 'vue';
     import ProductCard from './ProductCard.vue';
-
-    // Interfaz que define la estructura de un producto
-    interface Product {
-        name: string;
-        price: number;
-    }
+    import IProduct from '@/interfaces/IProduct';
+    import ProductService from '@/services/ProductService';
 
     // Define los eventos del componente
     const emit = defineEmits<{
         (event: 'addToCart', productName: string, productPrice: number): void;
     }>();
 
-    // Define la lista de productos
-    const products = ref<Product[]>([
-        { name: 'Product 1', price: 10 },
-        { name: 'Product 2', price: 15 },
-        { name: 'Product 3', price: 20 },
-        { name: 'Product 4', price: 25 },
-        { name: 'Product 5', price: 30 }
-    ]);
+    const productService = new ProductService();
+    const products = ref<IProduct[]>([]);
+
+    // Obtiene los productos desde el sevidor
+    onMounted(async () => {
+        await productService.fetchAll();
+        products.value = productService.getProducts().value;
+    });
 
     // Función que maneja el evento 'addToCart'
     const addToCart = (productName: string, productPrice: number) => {
         emit('addToCart', productName, productPrice);
-    };
-
-    // Define los componentes utilizados en este componente
-    const components = {
-        ProductCard
     };
 </script>
 
